@@ -561,6 +561,14 @@ Formally the entire PT record matches:
  ``{\tt \emph{start};\emph{end};\emph{strand};\emph{type}(;\emph{key}(=\emph{value}))*(\char92|\emph{start};\emph{end};\emph{strand};\emph{type}(;\emph{key}(=\emph{value}))*)*}''.
  }%End of PT tag footnote
 
+\subsection{Regarding the FT tag}
+There are two ways in which reads can be filtered: their 0x200 bit can be set (not passing filters) or their 0x4 bit can be set (segment unmapped). 
+In either case it may be important or interesting to inform the users that this action was done after the vendor created the record and the aligner had been run. 
+The {\tt FT} tag is a place to put such information. 
+For example, Picard's MergeBamAlignment will unmap a read if it finds that it had been clipped on both ends, and it has less than some number of bases that are \emph{not} clipped.
+The {\tt FT} tag will be set to say "Cross-species contamination" (as this is what it perceives the read to be sourced from in this case). 
+GATK's bamOut mode of Haplotype caller will set 0x200 bit for reads that wouldn't count towards the model.  
+The {\tt FT} tag is used to explain why this is the case (e.g. Trimmed, Downsampled, etc.). 
 \subsection{Regarding the RX, and QX tags}
 The {\tt RX} tag should match in length with the {\tt QX} tag. 
 What one does with multiple molecular barcodes (e.g. one on each end of the template) is left to the implementation. 
